@@ -284,7 +284,8 @@ sync_api:
   # This option controls which HTTP header to inspect to find the real remote IP
   # address of the client. This is likely required if Dendrite is running behind
   # a reverse proxy server.
-    real_ip_header: X-Real-IP
+  # Caddy sets this header and doesn't forward it from any other proxy
+  real_ip_header: X-Forwarded-For
 
 # Configuration for the User API.
 user_api:
