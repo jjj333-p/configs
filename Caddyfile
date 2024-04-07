@@ -1,0 +1,71 @@
+# The Caddyfile is an easy way to configure your Caddy web server.
+#
+# Unless the file starts with a global options block, the first
+# uncommented line is always the address of your site.
+#
+# To use your own domain name (with automatic HTTPS), first make
+# sure your domain's A/AAAA DNS records are properly pointed to
+# this machine's public IP, then replace ":80" below with your
+# domain name.
+
+# Global options block
+{
+        # In case there is a problem with your certificates.
+         email jjj333.p.1325@gmail.com
+
+        # Turn off the admin endpoint if you don't need graceful config
+        # changes and/or are running untrusted code on your machine.
+        # admin off
+
+        # Enable this if your clients don't send ServerName in TLS handshakes.
+        # default_sni example.com
+
+        # Enable debug mode for verbose logging.
+        # debug
+
+        # Use Let's Encrypt's staging endpoint for testing.
+        # acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+
+        # If you're port-forwarding HTTP/HTTPS ports from 80/443 to something
+        # else, enable these and put the alternate port numbers here.
+        # http_port  8080
+        # https_port 8443
+
+        log {
+           output file /var/log/caddy/pain.agency-access.log
+        }
+
+}
+
+# The server name of your matrix homeserver. This example shows
+# "well-known delegation" from the registered domain to a subdomain,
+# which is only needed if your server_name doesn't match your Matrix
+# homeserver URL (i.e. you can show users a vanity domain that looks
+# nice and is easy to remember but still have your Matrix server on
+# its own subdomain or hosted service).
+pain.agency {
+        root * /home/joseph/pain.agency
+        encode gzip
+        file_server {
+                hide .git
+        }
+
+        header /.well-known/matrix/* Content-Type application/json
+        header /.well-known/matrix/* Access-Control-Allow-Origin *
+        respond /.well-known/matrix/server `{"m.server": "matrix.pain.agency:443"}`
+        respond /.well-known/matrix/client `{"m.homeserver": {"base_url": "https://matrix.pain.agency"}, "org.matrix.msc3575.proxy": {"url": "https://sliding.pain.agency"}}`
+        respond /.well-known/matrix/support `{"contacts": [{"matrix_id": "@jjj333:pain.agency", "agency.pain.matrix_alt_id.1":"@jjj333_p_1325:envs.net", "agency.pain.matrix_alt_id.2":"@jjj333_p_1325:matrix.org", "email_address": "jjj333.p.1325@gmail.com","agency.pain.phone_number": "+17404811253", "agency.pain.telegram": "https://t.me/jjj333p", "role": "m.role.admin"}],"support_page": "https://pain.agency/legal"}`
+}
+
+# The actual domain name whereby your Matrix server is accessed.
+matrix.pain.agency {
+        respond /_matrix/media/*/*/foxcyb.org/* 404
+        respond /_matrix/media/*/*/matrix.fokk.in/* 404
+        # Set localhost:8008 to the address of your Dendrite server, if different
+        reverse_proxy /_matrix/* localhost:8008
+        # header_up X-Real-IP {remote_host}
+}
+
+sliding.pain.agency {
+        reverse_proxy /* localhost:8009
+}
