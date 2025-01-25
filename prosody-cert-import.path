@@ -1,0 +1,8 @@
+[Unit]
+Description=import certs from caddy to prosody
+
+[Path]
+PathModified=/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/
+
+[Install]
+WantedBy=multi-user.target
