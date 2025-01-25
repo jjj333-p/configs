@@ -11,7 +11,7 @@
 # Global options block
 {
         # In case there is a problem with your certificates.
-         email jjj333.p.1325@gmail.com
+        email jjj333.p.1325@gmail.com
 
         # Turn off the admin endpoint if you don't need graceful config
         # changes and/or are running untrusted code on your machine.
@@ -32,10 +32,10 @@
         # https_port 8443
 
         log {
-           output file /var/log/caddy/pain.agency-access.log
+                output file /var/log/caddy/pain.agency-access.log
         }
-
 }
+
 
 # The server name of your matrix homeserver. This example shows
 # "well-known delegation" from the registered domain to a subdomain,
@@ -44,17 +44,36 @@
 # nice and is easy to remember but still have your Matrix server on
 # its own subdomain or hosted service).
 pain.agency {
-        root * /home/joseph/pain.agency
-        encode gzip
-        file_server {
-                hide .git
-        }
 
-        header /.well-known/matrix/* Content-Type application/json
-        header /.well-known/matrix/* Access-Control-Allow-Origin *
-        respond /.well-known/matrix/server `{"m.server": "matrix.pain.agency:443"}`
-        respond /.well-known/matrix/client `{"m.homeserver": {"base_url": "https://matrix.pain.agency"}, "org.matrix.msc3575.proxy": {"url": "https://sliding.pain.agency"}}`
-        respond /.well-known/matrix/support `{"contacts": [{"matrix_id": "@jjj333:pain.agency", "agency.pain.matrix_alt_id.1":"@jjj333_p_1325:envs.net", "agency.pain.matrix_alt_id.2":"@jjj333_p_1325:matrix.org", "email_address": "jjj333.p.1325@gmail.com","agency.pain.phone_number": "+17404811253", "agency.pain.telegram": "https://t.me/jjj333p", "role": "m.role.admin"}],"support_page": "https://pain.agency/legal"}`
+        # user agents to block by sending to /dev/urandom
+        # @rr {
+        #       header User-Agent *curl*
+        # }
+
+        #if {>User-Agent} has "curl" reverse_proxy /* localhost:5000
+        #@curl header_regexp('User-Agent', 'foo')
+
+        #handle @curl {
+        #       reverse_proxy /* localhost:6969
+        #}
+
+        #handle @rr {
+        #       reverse_proxy localhost:6969
+        #}
+
+        handle {
+                root * /home/joseph/pain.agency
+                encode gzip
+                file_server {
+                        hide .git
+                }
+
+                header /.well-known/matrix/* Content-Type application/json
+                header /.well-known/matrix/* Access-Control-Allow-Origin *
+                respond /.well-known/matrix/server `{"m.server": "matrix.pain.agency:443"}`
+                respond /.well-known/matrix/client `{"m.homeserver": {"base_url": "https://matrix.pain.agency"}, "org.matrix.msc3575.proxy": {"url": "https://sliding.pain.agency"}}`
+                respond /.well-known/matrix/support `{"contacts": [{"matrix_id": "@jjj333:pain.agency", "agency.pain.matrix_alt_id.1":"@jjj333_p_1325:envs.net", "agency.pain.matrix_alt_id.2":"@jjj333_p_1325:matrix.org", "email_address": "jjj333.p.1325@gmail.com","agency.pain.phone_number": "+17404811253", "agency.pain.telegram": "https://t.me/jjj333p", "role": "m.role.admin"}],"support_page": "https://pain.agency/legal"}`
+        }
 }
 
 # The actual domain name whereby your Matrix server is accessed.
@@ -68,4 +87,34 @@ matrix.pain.agency {
 
 sliding.pain.agency {
         reverse_proxy /* localhost:8009
+}
+
+#http proxy for xmpp
+downloadable.pain.agency {
+        reverse_proxy localhost:5280
+        respond /file_share/Xn3cZBHkbQ0AW9lBRyT9V1dE/5fc8b6c7-36d9-4608-a167-2399cc1a0afe.png 404
+}
+
+#tcp only domains for xmpp
+group.pain.agency {
+        redir https://pain.agency{uri}
+}
+relay.pain.agency {
+        redir https://pain.agency{uri}
+}
+beacon.pain.agency {
+        redir https://pain.agency{uri}
+}
+
+
+config.mail.pain.agency {
+        reverse_proxy localhost:444
+}
+
+mail.pain.agency {
+        # header_up X-Real-IP {remote_host}
+        reverse_proxy localhost:8080 {
+                header_up X-Real-IP {remote_host}
+                header_up X-Forwarded {remote_host}
+        }
 }
