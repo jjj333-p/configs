@@ -1,0 +1,9 @@
+[Unit]
+Description=imports certs from caddy to prosody
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/prosodyctl --root cert import /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/
+
+[Install]
+WantedBy=multi-user.target
