@@ -88,7 +88,6 @@ modules_enabled = {
                 "http_altconnect";
                 "lastactivity";
                 "privilege";
-                "mod_invites";
                 "invites"; -- Create and manage invites
                 "invites_adhoc"; -- Allow admins/users to create invitations via their client
                 "invites_register"; -- Allows invited users to create accounts
@@ -110,10 +109,11 @@ modules_disabled = {
 --invite configuration
 allow_registration = true
 registration_invite_only = true
-invites_page = "http://localhost:5281/invites_page?{invite.token}"
-invites_registration_page = "register?t={invite.token}&c={app.id}"
+-- invites_page = "http://localhost:5281/invites_page?{invite.token}"
+-- invites_registration_page = "register?t={invite.token}&c={app.id}"
+invite_expiry = 86400 * 7
 site_name = "pain.agency"
-http_external_url = "https://xmpp-registration.pain.agency/"
+http_external_url = "xmpp-registration.pain.agency"
 site_apps = {
     {
         name  = "Gajim";
@@ -285,12 +285,6 @@ block_registrations_users = { "pain.agency", "jjj333_p", "jjj333_p_1325", "jjj33
 VirtualHost "pain.agency"
 -- Prosody requires at least one enabled VirtualHost to function. You can
 -- safely remove or disable 'localhost' once you have added another.
-invite_expiry = 86400 * 7
-modules_enabled = {
-    "invites";
-    "invites_adhoc";
-    "invites_register";
-}
 
 --VirtualHost "example.com"
 
