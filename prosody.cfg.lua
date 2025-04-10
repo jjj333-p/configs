@@ -51,9 +51,6 @@ modules_enabled = {
 
         -- Nice to have
                 "csi_simple"; -- Simple but effective traffic optimizations for mobile devices
-                "invites"; -- Create and manage invites
-                "invites_adhoc"; -- Allow admins/users to create invitations via their client
-                "invites_register"; -- Allows invited users to create accounts
                 "ping"; -- Replies to XMPP pings with pongs
                 "register"; -- Allow users to register on this server using a client and change passwords
                 "time"; -- Let others know the time here on this server
@@ -78,7 +75,6 @@ modules_enabled = {
                 --"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
                 "mimicking"; -- Prevent address spoofing
                 --"motd"; -- Send a message to users when they log in
-                "proxy65"; -- Enables a file transfer proxy service which clients behind NAT can use
                 "s2s_bidi"; -- Bi-directional server-to-server (XEP-0288)
                 "server_contact_info"; -- Publish contact information for this service
                 "tombstones"; -- Prevent registration of deleted accounts
@@ -92,6 +88,14 @@ modules_enabled = {
                 "http_altconnect";
                 "lastactivity";
                 "privilege";
+                "mod_invites";
+                "invites"; -- Create and manage invites
+                "invites_adhoc"; -- Allow admins/users to create invitations via their client
+                "invites_register"; -- Allows invited users to create accounts
+                "invites_register_web"; -- web regis
+                "invites_page"; --web page for registration
+                "invites_api"; --api for generating invites
+                "register_apps"; --app list for registration webpage
 }
 
 -- These modules are auto-loaded, but should you want
@@ -103,6 +107,31 @@ modules_disabled = {
         -- "posix"; -- POSIX functionality, sends server to background, etc.
 }
 
+--invite configuration
+allow_registration = true
+registration_invite_only = true
+invites_page = "http://localhost:5281/invites_page?{invite.token}"
+invites_registration_page = "register?t={invite.token}&c={app.id}"
+site_name = "pain.agency"
+http_external_url = "https://xmpp-registration.pain.agency/"
+site_apps = {
+    {
+        name  = "Gajim";
+        text  = [[A fully-featured desktop chat client for Windows and Linux.]];
+        image = "https://gajim.org/img/gajim-logo.png";
+        link  = "https://gajim.org/";
+        platforms = { "Windows", "Linux" };
+        download = {
+            buttons = {
+                { 
+                    text = "Download Gajim";
+                    url = "https://gajim.org/download/";
+                    target = "_blank";
+                };
+            };
+        };
+    };
+}
 
 -- Server-to-server authentication
 -- Require valid certificates for server-to-server connections?
@@ -220,8 +249,6 @@ log = {
 certificates = "certs"
 
 -- User Settings
-allow_registration = true
-registration_invite_only = true
 user_tombstone_expire = 60 * 86400
 smacks_hibernation_time = 86400
 
@@ -258,7 +285,12 @@ block_registrations_users = { "pain.agency", "jjj333_p", "jjj333_p_1325", "jjj33
 VirtualHost "pain.agency"
 -- Prosody requires at least one enabled VirtualHost to function. You can
 -- safely remove or disable 'localhost' once you have added another.
-
+invite_expiry = 86400 * 7
+modules_enabled = {
+    "invites";
+    "invites_adhoc";
+    "invites_register";
+}
 
 --VirtualHost "example.com"
 
@@ -287,7 +319,7 @@ modules_enabled = { "muc_mam", "vcard_muc", "muc_moderation", "muc_offline_deliv
 muc_log_by_default = true
 muc_log_presences = false
 log_all_rooms = true
-muc_log_expires_after = "4w"
+muc_log_expires_after = "1w"
 muc_log_cleanup_interval = 4*60*60
 
 ---Set up a file sharing component
@@ -296,6 +328,7 @@ muc_log_cleanup_interval = 4*60*60
 Component "downloadable.pain.agency" "http_file_share"
 name = "Hypertext (HTTP file share)"
 http_file_share_size_limit = 512*1024*1024
+http_file_share_daily_quota = 100*1024*1024 -- 100 MiB per day per user
 http_file_share_global_quota = 20*1024*1024*1024
 http_file_share_expires_after = 28*86400
 http_external_url = "https://downloadable.pain.agency/"
@@ -332,5 +365,5 @@ name = "Relayer (SOCKS5 bytestreams)"
 
 -- invite url
 -- To allow invitation through a token, mod_register
-allow_registration = false
-registration_invite_only = true
+-- allow_registration = false
+-- registration_invite_only = true
