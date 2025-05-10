@@ -93,7 +93,11 @@ sliding.pain.agency {
 #http proxy for xmpp
 downloadable.pain.agency {
         reverse_proxy localhost:5280
-        respond /file_share/Xn3cZBHkbQ0AW9lBRyT9V1dE/5fc8b6c7-36d9-4608-a167-2399cc1a0afe.png 404
+
+        header {
+                -Content-Disposition
+                Content-Disposition ":inline"
+        }
 }
 #web invites for xmpp
 xmpp-registration.pain.agency {
