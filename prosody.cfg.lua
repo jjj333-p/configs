@@ -113,7 +113,7 @@ registration_invite_only = true
 -- invites_registration_page = "register?t={invite.token}&c={app.id}"
 invite_expiry = 86400 * 7
 site_name = "pain.agency"
-http_external_url = "xmpp-registration.pain.agency"
+http_external_url = "https://xmpp-registration.pain.agency/"
 site_apps = {
     {
         name  = "Gajim";
@@ -309,7 +309,7 @@ muc_room_default_history_length = 100
 
 -- MUC MAM
 -- See https://prosody.im/doc/modules/mod_muc_mam
-modules_enabled = { "muc_mam", "vcard_muc", "muc_moderation", "muc_offline_delivery" }
+modules_enabled = { "muc_mam", "muc_moderation", "muc_offline_delivery" }
 muc_log_by_default = true
 muc_log_presences = false
 log_all_rooms = true
@@ -322,7 +322,7 @@ muc_log_cleanup_interval = 4*60*60
 Component "downloadable.pain.agency" "http_file_share"
 name = "Hypertext (HTTP file share)"
 http_file_share_size_limit = 512*1024*1024
-http_file_share_daily_quota = 100*1024*1024 -- 100 MiB per day per user
+http_file_share_daily_quota = 512*1024*1024 -- 512 MiB per day per user
 http_file_share_global_quota = 20*1024*1024*1024
 http_file_share_expires_after = 28*86400
 http_external_url = "https://downloadable.pain.agency/"
