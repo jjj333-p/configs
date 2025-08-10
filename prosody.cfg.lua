@@ -321,10 +321,10 @@ muc_log_cleanup_interval = 4*60*60
 -- See https://prosody.im/doc/modules/mod_http_file_share
 Component "downloadable.pain.agency" "http_file_share"
 name = "Hypertext (HTTP file share)"
-http_file_share_size_limit = 512*1024*1024
+http_file_share_size_limit = 512*1024*1024 -- 512 mib per file (you can upload your entire day quota in one go)
 http_file_share_daily_quota = 512*1024*1024 -- 512 MiB per day per user
-http_file_share_global_quota = 20*1024*1024*1024
-http_file_share_expires_after = 28*86400
+http_file_share_global_quota = 900*1024*1024 -- 900 mib global quota (change if needed)
+http_file_share_expires_after = 28*86400 -- 4 weeks
 http_external_url = "https://downloadable.pain.agency/"
 
 -- Beacon (publish-subscribe)
