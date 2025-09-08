@@ -304,8 +304,8 @@ restrict_room_creation = "local"
 component_admins_as_room_owners = true
 muc_tombstones = true
 muc_tombstone_expiry = 60*86400
-max_history_messages = 1
-muc_room_default_history_length = 100
+max_history_messages = 20
+muc_room_default_history_length = 10 
 
 -- MUC MAM
 -- See https://prosody.im/doc/modules/mod_muc_mam
