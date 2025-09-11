@@ -95,7 +95,11 @@ modules_enabled = {
                 "invites_page"; --web page for registration
                 "invites_api"; --api for generating invites
                 "register_apps"; --app list for registration webpage
+                "ping_muc"; --hopefully handle remote muc disconnects
+                "track_muc_joins"; --mod_ping_muc
+                "s2s_keepalive"; --handle remote servers restarting
 }
+
 
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
