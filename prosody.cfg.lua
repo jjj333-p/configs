@@ -113,33 +113,6 @@ modules_disabled = {
 unsolicited_messages_per_minute = 100
 unsolicited_s2s_messages_per_minute = 100
 
---invite configuration
-allow_registration = true
-registration_invite_only = true
--- invites_page = "http://localhost:5281/invites_page?{invite.token}"
--- invites_registration_page = "register?t={invite.token}&c={app.id}"
-invite_expiry = 86400 * 7
-site_name = "pain.agency"
-http_external_url = "https://xmpp-registration.pain.agency/"
-site_apps = {
-    {
-        name  = "Gajim";
-        text  = [[A fully-featured desktop chat client for Windows and Linux.]];
-        image = "https://gajim.org/img/gajim-logo.png";
-        link  = "https://gajim.org/";
-        platforms = { "Windows", "Linux" };
-        download = {
-            buttons = {
-                { 
-                    text = "Download Gajim";
-                    url = "https://gajim.org/download/";
-                    target = "_blank";
-                };
-            };
-        };
-    };
-}
-
 -- Server-to-server authentication
 -- Require valid certificates for server-to-server connections?
 -- If false, other methods such as dialback (DNS) may be used instead.
@@ -297,6 +270,32 @@ VirtualHost "pain.agency"
 -- safely remove or disable 'localhost' once you have added another.
 
 http_host = "xmpp-registration.pain.agency"
+--invite configuration
+allow_registration = true
+registration_invite_only = true
+-- invites_page = "http://localhost:5281/invites_page?{invite.token}"
+-- invites_registration_page = "register?t={invite.token}&c={app.id}"
+invite_expiry = 86400 * 7
+site_name = "pain.agency"
+http_external_url = "https://xmpp-registration.pain.agency/"
+site_apps = {
+    {
+        name  = "Gajim";
+        text  = [[A fully-featured desktop chat client for Windows and Linux.]];
+        image = "https://gajim.org/img/gajim-logo.png";
+        link  = "https://gajim.org/";
+        platforms = { "Windows", "Linux" };
+        download = {
+            buttons = {
+                {
+                    text = "Download Gajim";
+                    url = "https://gajim.org/download/";
+                    target = "_blank";
+                };
+            };
+        };
+    };
+}
 
 --VirtualHost "example.com"
 
@@ -312,6 +311,7 @@ http_host = "xmpp-registration.pain.agency"
 
 Component "group.pain.agency" "muc"
 name = "Rooms / Groups (MUC)"
+http_external_url = "https://group.pain.agency/"
 restrict_room_creation = "local"
 component_admins_as_room_owners = true
 muc_tombstones = true
