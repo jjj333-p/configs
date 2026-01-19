@@ -98,8 +98,8 @@ modules_enabled = {
                 "ping_muc"; --hopefully handle remote muc disconnects
                 "track_muc_joins"; --mod_ping_muc
                 "s2s_keepalive"; --handle remote servers restarting
+                "throttle_unsolicited" --ratelimit users not in roster
 }
-
 
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
@@ -109,6 +109,9 @@ modules_disabled = {
         -- "s2s"; -- Handle server-to-server connections
         -- "posix"; -- POSIX functionality, sends server to background, etc.
 }
+
+unsolicited_messages_per_minute = 100
+unsolicited_s2s_messages_per_minute = 100
 
 --invite configuration
 allow_registration = true
@@ -263,6 +266,8 @@ c2s_direct_tls_ports = { 5223 }
 s2s_direct_tls_ports = { 5270 }
 http_ports = { 5280 }
 
+consider_websocket_secure = true
+
 pep_max_items = 10000
 
 -- turn_external_host = "screm.test4d.org"
@@ -275,6 +280,7 @@ contact_info = {
 }
 
 trusted_proxies = { "127.0.0.1", "::1"}
+
 --groups_file = "/etc/prosody/groups.ini"
 
 -- Reserved usernames
@@ -289,6 +295,8 @@ block_registrations_users = { "pain.agency", "jjj333_p", "jjj333_p_1325", "jjj33
 VirtualHost "pain.agency"
 -- Prosody requires at least one enabled VirtualHost to function. You can
 -- safely remove or disable 'localhost' once you have added another.
+
+http_host = "xmpp-registration.pain.agency"
 
 --VirtualHost "example.com"
 
@@ -309,16 +317,29 @@ component_admins_as_room_owners = true
 muc_tombstones = true
 muc_tombstone_expiry = 60*86400
 max_history_messages = 20
-muc_room_default_history_length = 10 
+muc_room_default_history_length = 10
 
 -- MUC MAM
 -- See https://prosody.im/doc/modules/mod_muc_mam
-modules_enabled = { "muc_mam", "muc_moderation", "muc_offline_delivery" }
+modules_enabled = { "muc_mam", "muc_moderation", "muc_offline_delivery", "muc_limits", "pastebin" }
 muc_log_by_default = true
-muc_log_presences = false
-log_all_rooms = true
+muc_log_presences = true
+log_all_rooms = false
+
+-- https://modules.prosody.im/mod_muc_limits
+muc_event_rate = 1
+muc_burst_factor = 10
+muc_max_line_count = 50
+muc_max_nick_length = 100
+
 muc_log_expires_after = "1w"
 muc_log_cleanup_interval = 4*60*60
+
+-- https://modules.prosody.im/mod_pastebin
+pastebin_line_threshold = 5
+pastebin_trigger = "!paste"
+pastebin_expire_after = 2*7*24 -- 2 weeks
+
 
 ---Set up a file sharing component
 --Component "share.example.com" "http_file_share"
@@ -351,6 +372,10 @@ name = "Relayer (SOCKS5 bytestreams)"
 --
 --Component "gateway.example.com"
 --      component_secret = "password
+
+Component "koishi.pain.agency"
+        component_secret = "E/MW74OBGBI0N6+TE87G3b4GG+pmbPP74Dw9BF4I8MM="
+
 ---------- End of the Prosody Configuration file ----------
 -- You usually **DO NOT** want to add settings here at the end, as they would
 -- only apply to the last defined VirtualHost or Component.
