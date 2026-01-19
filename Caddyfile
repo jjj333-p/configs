@@ -64,6 +64,7 @@ pain.agency {
         handle {
                 root * /home/joseph/pain.agency
                 encode gzip
+                try_files {path} {path}/index.html
                 file_server {
                         hide .git
                 }
@@ -101,7 +102,7 @@ downloadable.pain.agency {
 }
 #web invites for xmpp
 xmpp-registration.pain.agency {
-        reverse_proxy localhost:5281
+        reverse_proxy localhost:5280
 }
 
 #tcp only domains for xmpp
@@ -115,6 +116,18 @@ beacon.pain.agency {
         redir https://pain.agency{uri}
 }
 
+koishi.pain.agency {
+        reverse_proxy localhost:4567
+}
+
+ytb.pain.agency {
+        root * /home/joseph/ytdlp-bot/videos
+        encode gzip
+        try_files {path} {path}/index.html
+        file_server {
+                hide .git         
+        }
+}
 
 config.mail.pain.agency {
         reverse_proxy localhost:444
