@@ -107,7 +107,7 @@ xmpp-registration.pain.agency {
 
 #tcp only domains for xmpp
 group.pain.agency {
-        redir https://pain.agency{uri}
+        reverse_proxy localhost:5280
 }
 relay.pain.agency {
         redir https://pain.agency{uri}
