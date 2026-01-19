@@ -374,7 +374,7 @@ name = "Relayer (SOCKS5 bytestreams)"
 --      component_secret = "password
 
 Component "koishi.pain.agency"
-        component_secret = "E/MW74OBGBI0N6+TE87G3b4GG+pmbPP74Dw9BF4I8MM="
+        component_secret = "[REDACTED]"
 
 ---------- End of the Prosody Configuration file ----------
 -- You usually **DO NOT** want to add settings here at the end, as they would
