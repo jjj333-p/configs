@@ -336,7 +336,7 @@ muc_log_expires_after = "1w"
 muc_log_cleanup_interval = 4*60*60
 
 -- https://modules.prosody.im/mod_pastebin
-pastebin_line_threshold = 5
+pastebin_line_threshold = 10
 pastebin_trigger = "!paste"
 pastebin_expire_after = 2*7*24 -- 2 weeks
 
